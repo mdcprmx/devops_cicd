@@ -1,0 +1,70 @@
+# стадии. (строка 11) 
+#  - задачи из одной стадии выполняются параллельно, тоесть одновременно
+#  - выполняются в той последовательности, как ты напишешь (сверху в низ)
+
+# задачи. (строки 17, 33, 45, 57)
+#  - stage указывает к какой стадии она относится
+#  - tags указывает какой gitlab-runner сможет выполнять эту задачу
+#  - script и есть собственно то что делает эта задача
+#  - artifacts указывает где искать выходные файлы/бинарники/запускаторы
+
+stages:
+  - build
+  - style
+  - test
+  - deploy
+
+s21_nasha_zadacha:
+  stage: build
+  tags:
+    - build
+  script:
+    - cd CICD_scripts
+    - chmod +x build_test.sh && sh build_test.sh
+    - test $? -eq 0 && echo "Build test SUCCESS" || echo "Build test FAIL"
+  artifacts:
+    paths:
+      - src/cat
+      - src/grep
+  after_script:
+      - cd CICD_scripts
+      - sh tgbot.sh "Build status - "
+
+s21_nash_stilyaga_test:
+  stage: style 
+  tags:
+    - style
+  script:
+    - cd CICD_scripts
+    - chmod +x style_test.sh && sh style_test.sh
+    - test $? -eq 0 && echo "Style test SUCCESS" || echo "Style test FAIL"
+  after_script:
+      - cd CICD_scripts
+      - sh tgbot.sh "Style status - "
+
+s21_nash_function_test:
+  stage: test
+  tags:
+    - test
+  script:
+    - cd CICD_scripts
+    - chmod +x funct_test.sh && sh funct_test.sh
+    - test $? -eq 0 && echo "Functional test SUCCESS" || echo "Functional test FAIL"
+  after_script:
+      - cd CICD_scripts
+      - sh tgbot.sh "Function status - "
+
+s21_deploy_v_prodakshn:
+  stage: deploy
+  tags:
+    - deploy
+  when: manual
+  script:
+    - echo "Deploy stage in progress.."
+    - cd CICD_scripts
+    - chmod +x deploy_script.sh && sh deploy_script.sh
+    - echo "Deploy SUCCESS!"
+  after_script:
+      - cd CICD_scripts
+      - sh tgbot.sh "Deploy status - "
+
