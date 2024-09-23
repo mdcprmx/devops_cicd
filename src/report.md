@@ -86,7 +86,7 @@
     - **[*UBUNTU SERVER 22.04*](https://releases.ubuntu.com/jammy/ubuntu-22.04.4-live-server-amd64.iso)** \
 - ![](./pics/g3.png)
 
-
+---
 ##### Скачиваю и устанавливаю на виртуальную машину **gitlab-runner**.
 - Просто взять и установить через **apt-get** не удастся, сначала нужно прожать:
     - **curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash** \
@@ -97,19 +97,17 @@
     ![](./pics/g4.png)
     - **gitlab-runner** установлен
 
-
+---
 ##### Запускаю **gitlab-runner** и регистриирую его для использования в текущем проекте (*DO6_CICD*).
-- Их можно найти на **edu** \
-    <!-- - ![](./pics/g5.png) -->
+- Командой:
+    - **sudo gitlab-runner register** \
+    <!-- - ![](./pics/g5.png) --> 
     - ![error](./pics/2024july_p20.png)
+    - **URL** и **registration token** искать на страничке проекта в **edu**
     - Также важно было во время регистрации раннера выставить тэги. Например такие:
     - **build, test, style, deploy**
     <!-- ![](./pics/g6.png) -->
-
-- Конфиг гитлаб-раннера выглядит так, лежит по пути:
-    - **/etc/gitlab-runner/config.toml** \
-    - ![config](./pics/2024july_p33.png)
-
+---
 - Проверяю что **gitlab-runner** работает через одну из команд:
     - **sudo gitlab-runner verify**
     - **sudo systemctl status gitlab-runner** \
